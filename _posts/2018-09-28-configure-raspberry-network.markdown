@@ -1,5 +1,8 @@
 ---
 layout: post
+title:  "Configure Raspberry Network"
+date:   2018-09-28 17:23:12 +0800
+categories: raspberry config
 ---
 This post presents guidelines to configure network for Raspberry Pi Model 2/3 inside console environment.
 ## Setting up Wifi connection

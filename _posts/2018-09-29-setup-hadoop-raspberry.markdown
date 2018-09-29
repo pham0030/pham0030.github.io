@@ -1,5 +1,8 @@
 ---
 layout: post
+title:  "Setup Hadoop Raspberry"
+date:   2018-09-29 17:23:12 +0800
+categories: hadoop raspberry
 ---
 These are guidelines to setup Hadoop cluster on Raspberry Pi computer.
 
