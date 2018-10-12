@@ -26,7 +26,6 @@ IPV6INIT=no
 * To verify if IPv6 is enabled or not, execute ```ifconfig -a | grep inet6```, it should display nothing if the ipv6 is disabled.
 * Edit ```/etc/default/grub``` and add ```ipv6.disable=1``` in line GRUB_CMDLINE_LINUX, e.g.:
 ```console
-cat /etc/default/grub
 GRUB_TIMEOUT=5
 GRUB_DEFAULT=saved
 GRUB_DISABLE_SUBMENU=true
