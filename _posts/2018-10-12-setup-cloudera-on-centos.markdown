@@ -14,7 +14,8 @@ This post presents guidelines to setup Cloudera on CENTOS 7.2
   ```vi /etc/sysconfig/network-scripts/ifcfg-eth0```
   * Add the following line with correct information from ```ifconfig```:
   
-  ```DEVICE=eth0
+  ```console
+  DEVICE=eth0
   BOOTPROTO=static
   IPADDR=192.xxx.x.x
   NETMASK=255.255.255.0
