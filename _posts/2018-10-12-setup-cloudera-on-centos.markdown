@@ -48,7 +48,7 @@ By setting up a static ip, sometime the dns servers can not be automatically det
 sudo setenforce 0
 
 ### Following steps shown in the official website
-[Cloudera Installatin 5.15](https://www.cloudera.com/documentation/enterprise/5-15-x/topics/installation.html)
+[Cloudera Installation 5.15](https://www.cloudera.com/documentation/enterprise/5-15-x/topics/installation.html)
 
 ### Troubleshooting
 * During installation, there might be some issues with permission. One way to fix this is by changing permission level for zookeeper/yarn/spark/oozie service via:
