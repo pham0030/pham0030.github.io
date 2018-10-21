@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "Setup Cloudera on CENTOS 7.2"
+title:  "Setup Cloudera on CENTOS 7.6"
 date:   2018-10-12 21:00:00 +0800
 categories: cloudera hadoop centos
 ---
-This post presents guidelines to setup Cloudera on CENTOS 7.2
+This post presents complementary guidelines to setup Cloudera on CENTOS 7.6. The steps shown in the official Cloudera is not sufficient, for example the OS firewall can be enabled and block the installation process. 
 
 ### Setup static IP
 * Check name of the ethernet with __ifconfig__, assume it is to be __eth0__
@@ -22,6 +22,7 @@ ONBOOT=yes
 TYPE=Ethernet
 IPV6INIT=no
 ```
+
 ### Disable ipv6
 * To verify if IPv6 is enabled or not, execute ```ifconfig -a | grep inet6```, it should display nothing if the ipv6 is disabled.
 * Edit ```/etc/default/grub``` and add ```ipv6.disable=1``` in line GRUB_CMDLINE_LINUX, e.g.:
@@ -38,3 +39,20 @@ GRUB_DISABLE_RECOVERY="true"
 grub2-mkconfig -o /boot/grub2/grub.cfg
 ```
 * Reboot
+
+### Setting up DNS Server
+By setting up a static ip, sometime the dns servers can not be automatically determined. Resolve this issue by editing the file ```/etc/resolv.conf``` with specific information such as:
+```nameserver 8.8.8.8```
+
+### Disabe SELinux
+sudo setenforce 0
+
+### Following steps shown in the official website
+[Cloudera Installatin 5.15](https://www.cloudera.com/documentation/enterprise/5-15-x/topics/installation.html)
+
+### Troubleshooting
+* During installation, there might be some issues with permission. One way to fix this is by changing permission level for zookeeper/yarn/spark/oozie service via:
+```
+chmod -R 755 /var/lib/zookeeper
+chown -R zookeeper:zookeeper /var/lib/zookeeper
+```
