@@ -1,16 +1,14 @@
 ---
 layout: post
-title:  "Setup Cloudera on CENTOS 7.6"
+title:  "Setup Cloudera on CENTOS 7"
 date:   2018-10-12 21:00:00 +0800
 categories: cloudera hadoop centos
 ---
-This post presents complementary guidelines to setup Cloudera on CENTOS 7.6. The steps shown in the official Cloudera is not sufficient, for example the OS firewall can be enabled and block the installation process. 
+This post presents complementary guidelines to setup Cloudera on CENTOS 7. It is recommended to install Cloudera 5.15.1 on CENTOS 7.3 at the time of this guide for incompatibility free. The steps shown in the official Cloudera is not sufficient, for example the OS SELinux can be enabled and block the installation process. 
 
 ### Setup static IP
 * Check name of the ethernet with __ifconfig__, assume it is to be __eth0__
-* Edit or add the following sudo:
-```vi /etc/sysconfig/network-scripts/ifcfg-eth0```
-* Add the following line with correct information from __ifconfig__:
+* Edit the following file ```sudo vi /etc/sysconfig/network-scripts/ifcfg-eth0``` with the following lines and corresponding information from __ifconfig__:
 ```console
 DEVICE=eth0
 BOOTPROTO=static
@@ -45,7 +43,7 @@ By setting up a static ip, sometime the dns servers can not be automatically det
 ```nameserver 8.8.8.8```
 
 ### Disabe SELinux
-sudo setenforce 0
+* Add ```SELINUX=disabled``` in ```/etc/selinux/config```
 
 ### Following steps shown in the official website
 [Cloudera Installation 5.15](https://www.cloudera.com/documentation/enterprise/5-15-x/topics/installation.html)
@@ -56,3 +54,16 @@ sudo setenforce 0
 chmod -R 755 /var/lib/zookeeper
 chown -R zookeeper:zookeeper /var/lib/zookeeper
 ```
+
+* NTP clock sync problem can be solved by commands below
+```sudo yum instal ntp
+firewall-cmd --add-service=ntp --permanent
+firewall-cmd --reload
+systemctl start ntpd
+systemctl enable ntpd
+systemctl status ntpd
+```
+* THP problems
+
+* Swappiness set to 10
+
