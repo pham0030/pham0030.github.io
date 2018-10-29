@@ -8,7 +8,7 @@ This post presents complementary guidelines to setup Cloudera on CENTOS 7. It is
 
 ### Setup static IP
 * Check name of the ethernet with __ifconfig__, assume it is to be __eth0__
-* Edit the following file ```sudo vi /etc/sysconfig/network-scripts/ifcfg-eth0``` with the following lines and corresponding information from __ifconfig__:
+* Edit the file ```/etc/sysconfig/network-scripts/ifcfg-eth0``` with the following lines and corresponding information from __ifconfig__:
 ```console
 DEVICE=eth0
 BOOTPROTO=static
@@ -39,11 +39,40 @@ grub2-mkconfig -o /boot/grub2/grub.cfg
 * Reboot
 
 ### Setting up DNS Server
-By setting up a static ip, sometime the dns servers can not be automatically determined. Resolve this issue by editing the file ```/etc/resolv.conf``` with specific information such as:
+By setting up a static ip, dns servers might not be automatically determined. Resolve this issue by editing the file ```/etc/resolv.conf``` with specific information such as:
 ```nameserver 8.8.8.8```
 
 ### Disabe SELinux
-* Add ```SELINUX=disabled``` in ```/etc/selinux/config```
+Add or edit the line ```SELINUX=disabled``` in file ```/etc/selinux/config```.
+
+### Setting Network Time Protocol, NTP
+NTP clock sync problem can be solved by commands below:
+```console
+sudo yum instal ntp
+firewall-cmd --add-service=ntp --permanent
+firewall-cmd --reload
+systemctl start ntpd
+systemctl enable ntpd
+systemctl status ntpd
+```
+
+### Disable Transparent Hugepages
+THP need to be disabled with root account:
+```console
+echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled
+echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag
+```
+
+### Change the swappiness
+CentOS swappiness should be set to below 10.
+* To check the current swappiness:
+```
+cat /proc/sys/vm/swappiness
+```
+* Permanently set the level of swappiness by add the below line to ```/etc/sysctl.conf```
+```
+vm.swappiness = 10
+```
 
 ### Following steps shown in the official website
 [Cloudera Installation 5.15](https://www.cloudera.com/documentation/enterprise/5-15-x/topics/installation.html)
@@ -54,16 +83,3 @@ By setting up a static ip, sometime the dns servers can not be automatically det
 chmod -R 755 /var/lib/zookeeper
 chown -R zookeeper:zookeeper /var/lib/zookeeper
 ```
-
-* NTP clock sync problem can be solved by commands below
-```sudo yum instal ntp
-firewall-cmd --add-service=ntp --permanent
-firewall-cmd --reload
-systemctl start ntpd
-systemctl enable ntpd
-systemctl status ntpd
-```
-* THP problems
-
-* Swappiness set to 10
-
